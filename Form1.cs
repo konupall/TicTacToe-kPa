@@ -8,8 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Collections;
 
 namespace TicTacToe
 {
@@ -17,6 +15,9 @@ namespace TicTacToe
     {
         bool xPlayerTurn = true;
         int turnCount = 0;
+        int pictureCounter = 1;
+        PictureBox pic;
+
         public Form1()
         {
             InitializeComponent();
@@ -42,61 +43,48 @@ namespace TicTacToe
             string labelName;
             for (int i = 1; i <= 9; i++)
             {
-                labelName = "label" + i;
-                Grid.Controls[labelName].Text = String.Empty;
-                Grid.Controls[labelName].BackColor = Color.LightGreen;
+                labelName = "pictureBox" + i;
+                Grid.Controls[labelName].Tag = String.Empty;
+                Grid.Controls[labelName].BackColor = Color.Transparent;
             }
         }
 
         private void Player_Click(object sender, EventArgs e)
         {
-            Label label = (Label)sender;
+            PictureBox picture = (PictureBox)sender;
 
-            if (label.Text != String.Empty)
+            if (picture.Tag != String.Empty)
             {
                 return;
             }
 
             if (xPlayerTurn)
             {
-                label.Text = "X";
-                play_sound("whatareudoin");
+                picture.Tag = "X";
             }
             else
             {
-                label.Text = "O";
-                play_sound("whatareudoin2");
+                picture.Tag = "O";
             }
-
-
             turnCount++;
+            PlaySound("click_sound");
             CheckForWin();
             CheckForDraw();
             xPlayerTurn = !xPlayerTurn;
         }
 
-        // Trying to get this to work
-        //private void RandSound()
-        //{
-        //    string[] files = Directory.GetFiles("path");
-        //    Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //    int choice = rnd.Next(0, files.Length - 1);
-        //    string soundFile = files[choice];
-        //    System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundFile);
-        //    player.Play();
-        //}
 
         private void CheckForWin()
         {
             if (
-                    (label1.Text == label2.Text && label2.Text == label3.Text && label1.Text != String.Empty) ||
-                    (label4.Text == label5.Text && label5.Text == label6.Text && label4.Text != String.Empty) ||
-                    (label7.Text == label8.Text && label8.Text == label9.Text && label7.Text != String.Empty) ||
-                    (label1.Text == label4.Text && label4.Text == label7.Text && label1.Text != String.Empty) ||
-                    (label2.Text == label5.Text && label5.Text == label8.Text && label2.Text != String.Empty) ||
-                    (label3.Text == label6.Text && label6.Text == label9.Text && label3.Text != String.Empty) ||
-                    (label1.Text == label5.Text && label5.Text == label9.Text && label1.Text != String.Empty) ||
-                    (label3.Text == label5.Text && label5.Text == label7.Text && label3.Text != String.Empty)
+                    (pictureBox1.Tag == pictureBox2.Tag && pictureBox2.Tag == pictureBox3.Tag && pictureBox1.Tag != String.Empty) ||
+                    (pictureBox4.Tag == pictureBox5.Tag && pictureBox5.Tag == pictureBox6.Tag && pictureBox4.Tag != String.Empty) ||
+                    (pictureBox7.Tag == pictureBox8.Tag && pictureBox8.Tag == pictureBox9.Tag && pictureBox7.Tag != String.Empty) ||
+                    (pictureBox1.Tag == pictureBox4.Tag && pictureBox4.Tag == pictureBox7.Tag && pictureBox1.Tag != String.Empty) ||
+                    (pictureBox2.Tag == pictureBox5.Tag && pictureBox5.Tag == pictureBox8.Tag && pictureBox2.Tag != String.Empty) ||
+                    (pictureBox3.Tag == pictureBox6.Tag && pictureBox6.Tag == pictureBox9.Tag && pictureBox3.Tag != String.Empty) ||
+                    (pictureBox1.Tag == pictureBox5.Tag && pictureBox5.Tag == pictureBox9.Tag && pictureBox1.Tag != String.Empty) ||
+                    (pictureBox3.Tag == pictureBox5.Tag && pictureBox5.Tag == pictureBox7.Tag && pictureBox3.Tag != String.Empty)
                 )
             {
                 GameOver();
@@ -105,48 +93,48 @@ namespace TicTacToe
 
         private void WinnerCellsChangeColor()
         {
-            if (label1.Text == label2.Text && label1.Text == label3.Text && label1.Text != "")
+            if (pictureBox1.Tag == pictureBox2.Tag && pictureBox1.Tag == pictureBox3.Tag && pictureBox1.Tag != "")
             {
-                ChangeCellColors(label1, label2, label3, Color.Blue);
+                ChangeCellColors(pictureBox1, pictureBox2, pictureBox3, Color.Purple);
             }
-            else if (label4.Text == label5.Text && label4.Text == label6.Text && label4.Text != "")
+            else if (pictureBox4.Tag == pictureBox5.Tag && pictureBox4.Tag == pictureBox6.Tag && pictureBox4.Tag != "")
             {
-                ChangeCellColors(label4, label5, label6, Color.Blue);
+                ChangeCellColors(pictureBox4, pictureBox5, pictureBox6, Color.Purple);
             }
-            else if (label7.Text == label8.Text && label7.Text == label9.Text && label7.Text != "")
+            else if (pictureBox7.Tag == pictureBox8.Tag && pictureBox7.Tag == pictureBox9.Tag && pictureBox7.Tag != "")
             {
-                ChangeCellColors(label7, label8, label9, Color.Blue);
+                ChangeCellColors(pictureBox7, pictureBox8, pictureBox9, Color.Purple);
             }
-            else if (label1.Text == label4.Text && label1.Text == label7.Text && label1.Text != "")
+            else if (pictureBox1.Tag == pictureBox4.Tag && pictureBox1.Tag == pictureBox7.Tag && pictureBox1.Tag != "")
             {
-                ChangeCellColors(label1, label4, label7, Color.DarkBlue);
+                ChangeCellColors(pictureBox1, pictureBox4, pictureBox7, Color.Purple);
             }
-            else if (label2.Text == label5.Text && label2.Text == label8.Text && label2.Text != "")
+            else if (pictureBox2.Tag == pictureBox5.Tag && pictureBox2.Tag == pictureBox8.Tag && pictureBox2.Tag != "")
             {
-                ChangeCellColors(label2, label5, label8, Color.DarkBlue);
+                ChangeCellColors(pictureBox2, pictureBox5, pictureBox8, Color.Purple);
             }
-            else if (label3.Text == label6.Text && label3.Text == label9.Text && label3.Text != "")
+            else if (pictureBox3.Tag == pictureBox6.Tag && pictureBox3.Tag == pictureBox9.Tag && pictureBox3.Tag != "")
             {
-                ChangeCellColors(label3, label6, label9, Color.DarkBlue);
+                ChangeCellColors(pictureBox3, pictureBox6, pictureBox9, Color.Purple);
             }
-            else if (label1.Text == label5.Text && label1.Text == label9.Text && label1.Text != "")
+            else if (pictureBox1.Tag == pictureBox5.Tag && pictureBox1.Tag == pictureBox9.Tag && pictureBox1.Tag != "")
             {
-                ChangeCellColors(label1, label5, label9, Color.LightBlue);
+                ChangeCellColors(pictureBox1, pictureBox5, pictureBox9, Color.Purple);
             }
-            else if (label3.Text == label5.Text && label3.Text == label7.Text && label3.Text != "")
+            else if (pictureBox3.Tag == pictureBox5.Tag && pictureBox3.Tag == pictureBox7.Tag && pictureBox3.Tag != "")
             {
-                ChangeCellColors(label3, label5, label7, Color.LightBlue);
+                ChangeCellColors(pictureBox3, pictureBox5, pictureBox7, Color.Purple);
             }
-        }
 
-        private void ChangeCellColors(Label firstLabel, Label secondLabel, Label thirdLabel, Color color)
+        }
+        private void ChangeCellColors(PictureBox firstLabel, PictureBox secondLabel, PictureBox thirdLabel, Color color)
         {
             firstLabel.BackColor = color;
             secondLabel.BackColor = color;
             thirdLabel.BackColor = color;
         }
 
-        private void play_sound(string soundName)
+        private void PlaySound(string soundName)
         {
             System.IO.Stream str = (System.IO.Stream)Properties.Resources.ResourceManager.GetObject(soundName);
             System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
@@ -157,7 +145,7 @@ namespace TicTacToe
         {
             if (turnCount == 9)
             {
-                play_sound("draw_sound");
+                PlaySound("draw_sound");
                 MessageBox.Show("Draw!");
                 RestartGame();
             }
@@ -174,10 +162,34 @@ namespace TicTacToe
             {
                 winner = "O";
             }
+            PlaySound("win_sound");
             WinnerCellsChangeColor();
-            play_sound("win_sound");
-            MessageBox.Show(winner  + " wins!");
+            MessageBox.Show(winner + " wins!");
             RestartGame();
+        }
+
+        private void Animate()
+        {
+            string turn;
+            string pictureName;
+
+            turn = pic.Tag.ToString();
+            turn = turn.ToLower();
+
+            pictureName = turn + "_frame_0" + pictureCounter.ToString("00");
+            pic.Image = (Image)Properties.Resources.ResourceManager.GetObject(pictureName);
+            pic.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureCounter += 1;
+            if (pictureCounter > 20)
+            {
+                pictureCounter = 1;
+                timer1.Stop();
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Animate();
         }
     }
 }
